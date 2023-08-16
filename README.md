@@ -57,3 +57,120 @@ Source: https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-se
 | Pin 14 (Ground)  | A0      | **0**         |
 | Pin 16 (GPIO 23) | A1      | 0             |
 | Pin 18 (GPIO 24) | A2      | 0             |
+
+# Setup Instructions
+
+From scratch setup:
+
+1. Plug in Raspberry Pi 3B into USB micro for power, HDMI cable for monitor/TV output, keyboard and mouse for input.
+1. Power on Raspberry Pi and connect to Wi-Fi network.
+1. Use the following instructions to be able to connect to the pi using xrdp:
+   - https://pimylifeup.com/raspberry-pi-remote-desktop/
+   - ```
+        sudo apt update
+        sudo apt upgrade
+        sudo apt install xrdp
+        sudo adduser moltres
+           (create the password)
+        hostname -I
+     ```
+   - Open Remote Desktop Connection on the windows computer
+   - Target the connection to the IP address retrieved by running `hostname -I`.
+   - An XRDP screen will prompt for username and password. Enter the username `moltres` and the password that you created.
+1. Once the connection is established, run the following commands in the terminal:
+   - ```bash
+       git clone https://github.com/ArgoTheNaut/project-moltres.git
+       <!-- ### TODO pip3 install latest python update -->
+       <!-- pip3 install -r requirements.txt -->
+       touch token.txt
+     ```
+1. Open the newly created file `token.txt` and save your discord token into this file.
+1. Install the latest version of Python by following the following instructions:  
+   https://raspberrytips.com/install-latest-python-raspberry-pi/
+
+   - Download the following archive on the Pi:
+
+     ```bash
+     wget https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz
+     ```
+
+   - Extract the files:
+
+     ```bash
+     tar -zxvf Python-3.11.4.tgz
+     ```
+
+   - Move into the extracted archive
+     ```bash
+     cd Python-3.11.4
+     ```
+   - Run configuration:
+
+     ```bash
+     ./configure --enable-optimizations
+     ```
+
+   - Make the created build:
+     ```bash
+     sudo make altinstall
+     ```
+
+1. Update OpenSSL to ensure that communication with python library imports works:  
+   https://linuxhint.com/update-open-ssl-raspberry-pi/ (Awais Khan)
+
+   1. ```bash
+      sudo apt install build-essential zlib1g-dev checkinstall -y
+      ```
+   1. Get the latest version link from here to use in the next step: https://www.openssl.org/source/
+   1. ```bash
+      sudo wget https://www.openssl.org/source/openssl-3.1.2.tar.gz
+      sudo tar -xf openssl-3.1.2.tar.gz
+      cd openssl-3.1.2
+      sudo ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib
+      sudo make
+      sudo make install
+      ```
+
+   1. Configure OpenSSL
+
+      ```bash
+      cd /etc/ld.so.conf.d/
+      sudo nano openssl-3.1.2.conf
+      ```
+
+      Add `/usr/local/ssl/lib` to the file.  
+      Reload the environment with
+
+      ```bash
+      sudo ldconfig -v
+      ```
+
+   1. Replace the default OpenSSL libraries
+
+      ```bash
+      sudo mv /usr/bin/openssl /usr/bin/openssl.BEKUP
+      sudo mv /usr/bin/c_rehash /usr/bin/c_rehash.BEKUP
+      ```
+
+   1. Edit the environments file
+
+      ```bash
+      sudo nano /etc/environment
+      ```
+
+      To add the following line:
+
+      ```
+      PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/ssl/bin"
+      ```
+
+   1. Reload the environment:
+
+      ```
+      source /etc/environment
+      ```
+
+   1. Verify that the process worked to install the new version of OpenSSL:
+      ```
+      openssl version
+      ```
