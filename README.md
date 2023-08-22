@@ -65,6 +65,7 @@ From scratch setup:
 1. Plug in Raspberry Pi 3B into USB micro for power, HDMI cable for monitor/TV output, keyboard and mouse for input.
 1. Power on Raspberry Pi and connect to Wi-Fi network.
 1. Use the following instructions to be able to connect to the pi using xrdp:
+
    - https://pimylifeup.com/raspberry-pi-remote-desktop/
    - ```
         sudo apt update
@@ -77,6 +78,9 @@ From scratch setup:
    - Open Remote Desktop Connection on the windows computer
    - Target the connection to the IP address retrieved by running `hostname -I`.
    - An XRDP screen will prompt for username and password. Enter the username `moltres` and the password that you created.
+
+   - Alternatively, you can use SSH: https://phoenixnap.com/kb/enable-ssh-raspberry-pi
+
 1. Once the connection is established, run the following commands in the terminal:
    - ```bash
        git clone https://github.com/ArgoTheNaut/project-moltres.git
@@ -85,7 +89,8 @@ From scratch setup:
        touch token.txt
      ```
 1. Open the newly created file `token.txt` and save your discord token into this file.
-1. Install the latest version of Python by following the following instructions:  
+
+<!-- 1. Install the latest version of Python by following the following instructions:
    https://raspberrytips.com/install-latest-python-raspberry-pi/
 
    - Download the following archive on the Pi:
@@ -115,7 +120,7 @@ From scratch setup:
      sudo make altinstall
      ```
 
-1. Update OpenSSL to ensure that communication with python library imports works:  
+1. Update OpenSSL to ensure that communication with python library imports works:
    https://linuxhint.com/update-open-ssl-raspberry-pi/ (Awais Khan)
 
    1. ```bash
@@ -138,7 +143,7 @@ From scratch setup:
       sudo nano openssl-3.1.2.conf
       ```
 
-      Add `/usr/local/ssl/lib` to the file.  
+      Add `/usr/local/ssl/lib` to the file.
       Reload the environment with
 
       ```bash
@@ -173,4 +178,4 @@ From scratch setup:
    1. Verify that the process worked to install the new version of OpenSSL:
       ```
       openssl version
-      ```
+      ``` -->
