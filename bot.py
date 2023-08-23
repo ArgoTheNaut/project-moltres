@@ -14,7 +14,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
-POLLING_INTERVAL_SECONDS = 60
+POLLING_INTERVAL_MINUTES = 1
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
@@ -62,7 +62,7 @@ class Thermometer(commands.Cog):
     def __init__(self):
         self.post_temp.start()
 
-    @tasks.loop(seconds=POLLING_INTERVAL_SECONDS)
+    @tasks.loop(minutes=POLLING_INTERVAL_MINUTES)
     async def post_temp(self):
         temp = get_temp()
         if temp > THRESHOLD_TOO_HOT:
@@ -75,7 +75,9 @@ def get_temp():
     print("Acquiring temperature at", datetime.datetime.now())
     with board.I2C() as i2c:
         t = adafruit_mcp9808.MCP9808(i2c)
-        return t.temperature
+        temp = t.temperature
+        print("Found temperature:", temp)
+        return temp
 
 
 with open("token.txt", "r") as auth_token:
