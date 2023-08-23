@@ -45,7 +45,7 @@ async def on_ready():
     # await set_interval(post_temp, POLLING_INTERVAL_SECONDS)
 
     while True:
-        asyncio.sleep(POLLING_INTERVAL_SECONDS)
+        await asyncio.sleep(POLLING_INTERVAL_SECONDS)
         await post_temp()
 
 
