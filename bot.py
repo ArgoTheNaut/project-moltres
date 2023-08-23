@@ -7,6 +7,7 @@ import board
 import adafruit_mcp9808
 import time, threading
 import asyncio
+import datetime
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -63,7 +64,7 @@ async def post_temp():
 
 
 def get_temp():
-    print("Acquiring temperature")
+    print("Acquiring temperature at", datetime.datetime.now())
     with board.I2C() as i2c:
         t = adafruit_mcp9808.MCP9808(i2c)
         return t.temperature
