@@ -47,16 +47,16 @@ Source: https://learn.adafruit.com/adafruit-mcp9808-precision-i2c-temperature-se
 
 #### Connection Plan
 
-| Raspberry Pi     | MCP9808 | Digital Value |
-| ---------------- | ------- | ------------- |
-| Pin 4 (5V)       | Vdd     | 1             |
-| Pin 6 (Ground)   | Gnd     | **0**         |
-| Pin 8 (GPIO 14)  | SCL     | variable      |
-| Pin 10 (GPIO 15) | SDA     | variable      |
-| Pin 12 (GPIO 18) | Alert   | 0             |
-| Pin 14 (Ground)  | A0      | **0**         |
-| Pin 16 (GPIO 23) | A1      | 0             |
-| Pin 18 (GPIO 24) | A2      | 0             |
+| Raspberry Pi      | MCP9808 | Digital Value |
+| ----------------- | ------- | ------------- |
+| Pin 4 (5V)        | Vdd     | 1             |
+| Pin 6 (Ground)    | Gnd     | **0**         |
+| Pin 5 (SCL/GPIO3) | SCL     | variable      |
+| Pin 3 (SDA/GPIO2) | SDA     | variable      |
+| Pin 12 (GPIO 18)  | Alert   | 0             |
+| Pin 14 (Ground)   | A0      | **0**         |
+| Pin 16 (GPIO 23)  | A1      | 0             |
+| Pin 18 (GPIO 24)  | A2      | 0             |
 
 # Setup Instructions
 

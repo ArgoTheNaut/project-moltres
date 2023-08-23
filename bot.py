@@ -44,3 +44,7 @@ async def on_message(message):
 
 with open("token.txt", "r") as auth_token:
     client.run(auth_token.read())
+
+with board.I2C() as i2c:
+    t = adafruit_mcp9808.MCP9808(i2c)
+    print(t.temperature)
