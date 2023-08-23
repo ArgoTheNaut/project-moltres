@@ -42,11 +42,7 @@ async def stderr(info: str):
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
-    # await set_interval(post_temp, POLLING_INTERVAL_SECONDS)
-
-    # while True:
-    #     await asyncio.sleep(POLLING_INTERVAL_SECONDS)
-    #     await post_temp()
+    Thermometer()
 
 
 @client.event
@@ -61,8 +57,8 @@ async def on_message(message):
 # https://discordpy.readthedocs.io/en/latest/ext/tasks/
 # https://stackoverflow.com/a/64167767
 class Thermometer(commands.Cog):
-    def __init(self):
-        pass
+    def __init__(self):
+        self.post_temp.start()
 
     @tasks.loop(seconds=POLLING_INTERVAL_SECONDS)
     async def post_temp(self):
