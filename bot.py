@@ -19,17 +19,27 @@ POLLING_INTERVAL_MINUTES = 1
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
+start_time = time.time()
+
+
+def get_delta_time():
+    return time.time() - start_time
+
 
 # Make sure we're online before proceeding
-def ip_available():
+def ip_available(target="http://8.8.8.8"):
     try:
-        request.urlopen("http://8.8.8.8", timeout=10)
+        request.urlopen(target, timeout=10)
         return True
     except request.URLError as err:
         return False
 
 
-print("Checking if IP Requests are able to go through", ip_available())
+retry_attempts = 5
+while retry_attempts > 0:
+    retry_attempts -= 1
+    print("Checking if IP Requests are able to go through", ip_available())
+    print("Response time:", get_delta_time())
 
 client = discord.Client(intents=intents)
 
