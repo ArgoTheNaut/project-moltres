@@ -68,12 +68,12 @@ From scratch setup:
 
    - https://pimylifeup.com/raspberry-pi-remote-desktop/
    - ```
-        sudo apt update
-        sudo apt upgrade
-        sudo apt install xrdp
-        sudo adduser moltres
-           (create the password)
-        hostname -I
+      sudo apt update
+      sudo apt upgrade
+      sudo apt install xrdp
+      sudo adduser moltres
+         (create the password)
+      hostname -I
      ```
    - Open Remote Desktop Connection on the windows computer
    - Target the connection to the IP address retrieved by running `hostname -I`.
@@ -82,13 +82,21 @@ From scratch setup:
    - Alternatively, you can use SSH: https://phoenixnap.com/kb/enable-ssh-raspberry-pi
 
 1. Once the connection is established, run the following commands in the terminal:
-   - ```bash
-       git clone https://github.com/ArgoTheNaut/project-moltres.git
-       cd project-moltres
-       pip3 install -r requirements.txt
-       touch token.txt
-     ```
+   ```bash
+   git clone https://github.com/ArgoTheNaut/project-moltres.git
+   cd project-moltres
+   pip3 install -r requirements.txt
+   touch token.txt
+   ```
 1. Open the newly created file `token.txt` and save your discord token into this file.
+
+1. Add permission to access the i2c channels over remote connection
+
+   ```
+   su pi
+   # Enter password when prompted
+   sudo chmod a+rw /dev/i2c-*
+   ```
 
 1. Run the project and verify that it outputs to Discord:
    ```
