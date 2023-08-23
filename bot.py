@@ -15,7 +15,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
-POLLING_INTERVAL_MINUTES = 1
+POLLING_INTERVAL_MINUTES = 5
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
