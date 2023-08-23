@@ -29,6 +29,7 @@ async def send_warning(info: str):
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
+    get_temp()
     await send_status_update_normal("Standard Message")
     await send_warning("Standard warning test")
 
@@ -42,16 +43,18 @@ async def on_message(message):
         await message.channel.send("Hello!")
 
 
+def get_temp():
+    print("Acquiring temperature")
+    with board.I2C() as i2c:
+        print("Creating t")
+        t = adafruit_mcp9808.MCP9808(i2c)
+        print("Created t")
+
+        print("Accessing temp")
+        temp = t.temperature
+        print("Acquired temperature")
+        print(temp)
+
+
 with open("token.txt", "r") as auth_token:
     client.run(auth_token.read())
-
-print("Acquiring temperature")
-with board.I2C() as i2c:
-    print("Creating t")
-    t = adafruit_mcp9808.MCP9808(i2c)
-    print("Created t")
-
-    print("Accessing temp")
-    temp = t.temperature
-    print("Acquired temperature")
-    print(temp)
