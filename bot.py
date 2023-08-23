@@ -9,6 +9,7 @@ import time, threading
 import datetime
 from discord.ext import tasks, commands
 import platform
+from urllib import request
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -17,6 +18,18 @@ THRESHOLD_TOO_HOT = 23
 POLLING_INTERVAL_MINUTES = 1
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
+
+
+# Make sure we're online before proceeding
+def ip_available():
+    try:
+        request.urlopen("http://8.8.8.8", timeout=10)
+        return True
+    except request.URLError as err:
+        return False
+
+
+print("Checking if IP Requests are able to go through", ip_available())
 
 client = discord.Client(intents=intents)
 
