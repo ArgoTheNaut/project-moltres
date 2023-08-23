@@ -5,11 +5,13 @@ import os
 import discord
 import board
 import adafruit_mcp9808
+import threading
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
+POLLING_INTERVAL_SECONDS = 15
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
@@ -35,11 +37,18 @@ async def stderr(info: str):
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
-    temp = get_temp()
-    if temp > THRESHOLD_TOO_HOT:
-        await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
-    else:
-        await stdout(f"Temperature within normal range. {temp} Celcius")
+    set_interval(post_temp, POLLING_INTERVAL_SECONDS)
+
+
+# https://stackoverflow.com/questions/2697039/python-equivalent-of-setinterval
+def set_interval(func, sec):
+    def func_wrapper():
+        set_interval(func, sec)
+        func()
+
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
 
 
 @client.event
@@ -49,6 +58,14 @@ async def on_message(message):
 
     if message.content.startswith("$hello"):
         await message.channel.send("Hello!")
+
+
+async def post_temp():
+    temp = get_temp()
+    if temp > THRESHOLD_TOO_HOT:
+        await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
+    else:
+        await stdout(f"Temperature within normal range. {temp} Celcius")
 
 
 def get_temp():
