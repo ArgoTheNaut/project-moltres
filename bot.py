@@ -83,3 +83,5 @@ def get_temp():
 
 with open("token.txt", "r") as auth_token:
     client.run(auth_token.read())
+
+print("Something after client.run")
