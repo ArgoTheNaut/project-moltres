@@ -15,9 +15,6 @@ intents.message_content = True
 THRESHOLD_TOO_HOT = 23
 POLLING_INTERVAL_SECONDS = 5 * 60
 
-global last_sent_on
-last_sent_on = 0
-
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
 client = discord.Client(intents=intents)
@@ -78,5 +75,3 @@ def get_temp():
 
 with open("token.txt", "r") as auth_token:
     client.run(auth_token.read())
-
-print("Something after client.run")
