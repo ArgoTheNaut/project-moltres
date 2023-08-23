@@ -9,18 +9,24 @@ import adafruit_mcp9808
 intents = discord.Intents.default()
 intents.message_content = True
 
+THRESHOLD_TOO_HOT = 23
+
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
 client = discord.Client(intents=intents)
 
 
-async def send_status_update_normal(info: str):
+# Standard output channel
+# This should be safe to mute, but exists for logging and debugging purposes
+async def stdout(info: str):
     channel = client.get_channel(CHANNELS["stdout"])
     print("Retrieved channel:", channel)
     await channel.send(info)
 
 
-async def send_warning(info: str):
+# Standard error channel
+# This should have notifications set to occur regularly.
+async def stderr(info: str):
     channel = client.get_channel(CHANNELS["stderr"])
     print("Retrieved channel:", channel)
     await channel.send(info)
@@ -29,9 +35,11 @@ async def send_warning(info: str):
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
-    get_temp()
-    await send_status_update_normal("Standard Message")
-    await send_warning("Standard warning test")
+    temp = get_temp()
+    if temp > THRESHOLD_TOO_HOT:
+        await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
+    else:
+        await stdout(f"Temperature within normal range. {temp} Celcius")
 
 
 @client.event
@@ -46,14 +54,8 @@ async def on_message(message):
 def get_temp():
     print("Acquiring temperature")
     with board.I2C() as i2c:
-        print("Creating t")
         t = adafruit_mcp9808.MCP9808(i2c)
-        print("Created t")
-
-        print("Accessing temp")
-        temp = t.temperature
-        print("Acquired temperature")
-        print(temp)
+        return t.temperature
 
 
 with open("token.txt", "r") as auth_token:
