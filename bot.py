@@ -42,7 +42,7 @@ async def on_ready():
 
     while True:
         asyncio.sleep(POLLING_INTERVAL_SECONDS)
-        post_temp()
+        await post_temp()
 
 
 @client.event
