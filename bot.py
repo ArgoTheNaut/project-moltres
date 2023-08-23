@@ -6,8 +6,8 @@ import discord
 import board
 import adafruit_mcp9808
 import time, threading
-import asyncio
 import datetime
+from discord.ext import tasks, commands
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -44,9 +44,9 @@ async def on_ready():
     print(f"We have logged in as {client.user}")
     # await set_interval(post_temp, POLLING_INTERVAL_SECONDS)
 
-    while True:
-        await asyncio.sleep(POLLING_INTERVAL_SECONDS)
-        await post_temp()
+    # while True:
+    #     await asyncio.sleep(POLLING_INTERVAL_SECONDS)
+    #     await post_temp()
 
 
 @client.event
@@ -58,20 +58,19 @@ async def on_message(message):
         await message.channel.send("Hello!")
 
 
-async def post_temp():
-    global last_sent_on
-    # Loose mutex
-    if last_sent_on + POLLING_INTERVAL_SECONDS < time.time():
-        return
-    else:
-        last_sent_on = time.time()
+# https://discordpy.readthedocs.io/en/latest/ext/tasks/
+# https://stackoverflow.com/a/64167767
+class Thermometer(commands.Cog):
+    def __init(self):
+        pass
 
-    # Send once past mutex
-    temp = get_temp()
-    if temp > THRESHOLD_TOO_HOT:
-        await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
-    else:
-        await stdout(f"Temperature within normal range. {temp} Celcius")
+    @tasks.loop(seconds=POLLING_INTERVAL_SECONDS)
+    async def post_temp(self):
+        temp = get_temp()
+        if temp > THRESHOLD_TOO_HOT:
+            await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
+        else:
+            await stdout(f"Temperature within normal range. {temp} Celcius")
 
 
 def get_temp():
