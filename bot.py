@@ -13,7 +13,10 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
-POLLING_INTERVAL_SECONDS = 5
+POLLING_INTERVAL_SECONDS = 15
+
+global last_sent_on
+last_sent_on = 0
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
@@ -56,6 +59,14 @@ async def on_message(message):
 
 
 async def post_temp():
+    global last_sent_on
+    # Loose mutex
+    if last_sent_on + POLLING_INTERVAL_SECONDS < time.time():
+        return
+    else:
+        last_sent_on = time.time()
+
+    # Send once past mutex
     temp = get_temp()
     if temp > THRESHOLD_TOO_HOT:
         await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
