@@ -80,5 +80,6 @@ def get_temp():
         return temp
 
 
-with open("token.txt", "r") as auth_token:
+baseDir = "/".join(__file__.split("/")[:-1])
+with open(baseDir + "/token.txt", "r") as auth_token:
     client.run(auth_token.read())
