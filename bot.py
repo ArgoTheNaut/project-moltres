@@ -6,6 +6,7 @@ import discord
 import board
 import adafruit_mcp9808
 import time, threading
+import asyncio
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -52,7 +53,7 @@ async def on_ready():
 
 def action():
     print("Temperature read event!")
-    post_temp()
+    asyncio.run(post_temp())
 
 
 # Class written by: https://stackoverflow.com/users/1619521/doom
