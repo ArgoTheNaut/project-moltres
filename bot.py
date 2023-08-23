@@ -41,10 +41,10 @@ async def on_ready():
 
 
 # https://stackoverflow.com/questions/2697039/python-equivalent-of-setinterval
-def set_interval(func, sec):
-    def func_wrapper():
+async def set_interval(func, sec):
+    async def func_wrapper():
         set_interval(func, sec)
-        func()
+        await func()
 
     t = threading.Timer(sec, func_wrapper)
     t.start()
