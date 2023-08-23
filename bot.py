@@ -8,6 +8,7 @@ import adafruit_mcp9808
 import time, threading
 import datetime
 from discord.ext import tasks, commands
+import platform
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -39,6 +40,10 @@ async def stderr(info: str):
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
+
+    # https://stackoverflow.com/a/799799
+    stdout("Moltres is coming online on computer:", platform.node())
+
     Thermometer()
 
 

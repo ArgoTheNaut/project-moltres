@@ -99,6 +99,18 @@ From scratch setup:
    ```
 
 1. Run the project and verify that it outputs to Discord:
+
    ```
    python bot.py
    ```
+
+1. Configure the Pi to run this task routinely.
+   ```
+   su pi      # we'll need the super user for this
+   sudo nano /etc/rc.local
+   ```
+   At the top of the file, add:
+   ```
+   sudo python /home/moltres/project-moltres/bot.py 1>/home/moltres/project-moltres/stdout 2>/home/moltres/project-moltres/stderr &
+   ```
+1. Run `sudo reboot` to restart the Pi and run the code
