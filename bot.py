@@ -11,7 +11,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
-POLLING_INTERVAL_SECONDS = 15
+POLLING_INTERVAL_SECONDS = 5
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
@@ -51,7 +51,8 @@ async def on_ready():
 
 
 def action():
-    print("action ! -> time : ---s")
+    print("Temperature read event!")
+    post_temp()
 
 
 # Class written by: https://stackoverflow.com/users/1619521/doom
