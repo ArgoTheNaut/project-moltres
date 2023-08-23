@@ -42,7 +42,7 @@ async def on_ready():
     print(f"We have logged in as {client.user}")
 
     # https://stackoverflow.com/a/799799
-    stdout("Moltres is coming online on computer:", platform.node())
+    stdout("Moltres is coming online on computer: " + platform.node())
 
     Thermometer()
 
