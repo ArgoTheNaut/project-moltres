@@ -13,7 +13,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
-POLLING_INTERVAL_SECONDS = 15
+POLLING_INTERVAL_SECONDS = 5 * 60
 
 global last_sent_on
 last_sent_on = 0
