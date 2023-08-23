@@ -40,40 +40,9 @@ async def on_ready():
     print(f"We have logged in as {client.user}")
     # await set_interval(post_temp, POLLING_INTERVAL_SECONDS)
 
-    StartTime = time.time()
-
-    # start action every 0.6s
-    inter = setInterval(POLLING_INTERVAL_SECONDS, action)
-    print("just after setInterval -> time : {:.1f}s".format(time.time() - StartTime))
-
-    # will stop interval in 50s
-    t = threading.Timer(50, inter.cancel)
-    t.start()
-
-
-def action():
-    print("Temperature read event!")
-    asyncio.run(post_temp())
-
-
-# Class written by: https://stackoverflow.com/users/1619521/doom
-# Source: https://stackoverflow.com/a/48709380
-class setInterval:
-    def __init__(self, interval, action):
-        self.interval = interval
-        self.action = action
-        self.stopEvent = threading.Event()
-        thread = threading.Thread(target=self.__setInterval)
-        thread.start()
-
-    def __setInterval(self):
-        nextTime = time.time() + self.interval
-        while not self.stopEvent.wait(nextTime - time.time()):
-            nextTime += self.interval
-            self.action()
-
-    def cancel(self):
-        self.stopEvent.set()
+    while True:
+        asyncio.sleep(POLLING_INTERVAL_SECONDS)
+        post_temp()
 
 
 @client.event
