@@ -37,17 +37,21 @@ async def stderr(info: str):
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
-    set_interval(post_temp, POLLING_INTERVAL_SECONDS)
+    await set_interval(post_temp, POLLING_INTERVAL_SECONDS)
 
 
 # https://stackoverflow.com/questions/2697039/python-equivalent-of-setinterval
 async def set_interval(func, sec):
+    print("Starting routine polling")
+
     async def func_wrapper():
         set_interval(func, sec)
         await func()
 
     t = threading.Timer(sec, func_wrapper)
+    print("Timer created. (1/2)")
     t.start()
+    print("Timer started. (2/2)")
     return t
 
 
