@@ -105,12 +105,23 @@ From scratch setup:
    ```
 
 1. Configure the Pi to run this task routinely.
+
    ```
    su pi      # we'll need the super user for this
    sudo crontab -e
    ```
+
    At the end of the file, add:
+
    ```
    @reboot python /home/moltres/project-moltres/bot.py &
+   ```
+
+1. Configure the Pi to wait for the network on boot
+   ```
+   sudo raspi-config
+   1 (System Options)
+   S6 (Network at Boot)
+   set to enabled
    ```
 1. Run `sudo reboot` to restart the Pi and run the code
