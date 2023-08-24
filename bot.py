@@ -92,8 +92,8 @@ async def on_message(message):
 # https://stackoverflow.com/a/64167767
 class Thermometer(commands.Cog):
     def __init__(self):
-        self.post_temp.start()
-        self.t = 0
+        self.check_temp.start()
+        self.check_fire.start()
 
     @tasks.loop(minutes=POLLING_INTERVAL_MINUTES)
     async def check_temp(self):
