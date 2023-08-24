@@ -10,6 +10,7 @@ import datetime
 from discord.ext import tasks, commands
 import platform
 from urllib import request
+import logging as log
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -98,10 +99,12 @@ class Thermometer(commands.Cog):
 
     @tasks.loop(minutes=POLLING_INTERVAL_MINUTES)
     async def check_temp(self):
+        log.info("Performing normal/error poll")
         await post_temp(report_cold=True)
 
     @tasks.loop(minutes=POLLING_INTERVAL_ALERT_MINUTES)
     async def check_fire(self):
+        log.info("Performing error-only poll")
         await post_temp(report_cold=False)
 
 
