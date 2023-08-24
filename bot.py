@@ -88,6 +88,7 @@ async def on_message(message):
 class Thermometer(commands.Cog):
     def __init__(self):
         self.post_temp.start()
+        print("Started post_temp on an interval")
 
     @tasks.loop(minutes=POLLING_INTERVAL_MINUTES)
     async def post_temp(self):
