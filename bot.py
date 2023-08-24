@@ -40,7 +40,7 @@ def ip_available(target="http://8.8.8.8"):
         return False
 
 
-retry_attempts = 5
+retry_attempts = 60
 success = False
 while (not success) and (retry_attempts > 0):
     retry_attempts -= 1
@@ -48,7 +48,7 @@ while (not success) and (retry_attempts > 0):
     print("Checking if IP Requests are able to go through", success)
     print("Response time:", get_delta_time())
     if not success:
-        time.sleep(10)  # wait 10 more seconds for network to maybe be up now?
+        time.sleep(1)  # wait 1 more second for network to maybe be up now?
 
 client = discord.Client(intents=intents)
 
