@@ -34,9 +34,10 @@ def get_delta_time():
 # Make sure we're online before proceeding
 def ip_available(target="http://8.8.8.8"):
     try:
-        request.urlopen(target, timeout=10)
+        request.urlopen(target, timeout=5)
         return True
     except request.URLError as err:
+        print(err)
         return False
 
 
