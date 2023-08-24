@@ -15,7 +15,12 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 THRESHOLD_TOO_HOT = 23
+
+# How often to poll the temperature and report even if it is not too hot
 POLLING_INTERVAL_MINUTES = 5
+
+# How often to poll and report if the temperature is too hot
+POLLING_INTERVAL_ALERT_MINUTES = 1
 
 CHANNELS = {"stdout": 1134634193998065745, "stderr": 1134634212390084628}
 
@@ -88,14 +93,15 @@ async def on_message(message):
 class Thermometer(commands.Cog):
     def __init__(self):
         self.post_temp.start()
+        self.t = 0
 
     @tasks.loop(minutes=POLLING_INTERVAL_MINUTES)
-    async def post_temp(self):
-        temp = get_temp()
-        if temp > THRESHOLD_TOO_HOT:
-            await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
-        else:
-            await stdout(f"Temperature within normal range. {temp} Celcius")
+    async def check_temp(self):
+        await post_temp(report_cold=True)
+
+    @tasks.loop(minutes=POLLING_INTERVAL_ALERT_MINUTES)
+    async def check_fire(self):
+        await post_temp(report_cold=False)
 
 
 def get_temp():
@@ -105,6 +111,15 @@ def get_temp():
         temp = t.temperature
         print("Found temperature:", temp)
         return temp
+
+
+async def post_temp(report_cold=True):
+    temp = get_temp()
+    if temp > THRESHOLD_TOO_HOT:
+        await stderr(f"TEMPERATURE IS TOO HOT: {temp} Celcius")
+        return
+    if report_cold:
+        await stdout(f"Temperature within normal range. {temp} Celcius")
 
 
 baseDir = "/".join(__file__.split("/")[:-1])
